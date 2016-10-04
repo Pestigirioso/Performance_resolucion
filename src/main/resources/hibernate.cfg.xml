@@ -1,22 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3307/employees</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+	<session-factory>
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3307/employees</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">root</property>
 
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-        <property name="hibernate.hbm2ddl.auto">validate</property>
-        <property name="show_sql">true</property>
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 
-        <mapping resource="unq/tpi/persistencia/performanceEj/model/Employee.hbm.xml"></mapping>
-        <mapping resource="unq/tpi/persistencia/performanceEj/model/Department.hbm.xml"></mapping>
-        <mapping resource="unq/tpi/persistencia/performanceEj/model/Salary.hbm.xml"></mapping>
+		<!-- Disable the second-level cache -->
+		<property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
 		
-    </session-factory>
+		<property name="hibernate.hbm2ddl.auto">validate</property>
+
+		<mapping class="unq.tpi.persistencia.performance.model.Department" />
+		<mapping class="unq.tpi.persistencia.performance.model.Employee" />
+		<mapping class="unq.tpi.persistencia.performance.model.Salary" />
+	
+	</session-factory>
 </hibernate-configuration>

@@ -1,35 +1,21 @@
 package unq.tpi.persistencia.performance.model;
 
+import org.hibernate.annotations.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Where;
-import org.hibernate.annotations.WhereJoinTable;
-
 @Entity
-@Table(name="employees")
+@Table(name = "employees", indexes = {
+		@Index(columnList = "first_name", name = "employees_first_name_idx"),
+		@Index(columnList = "last_name", name = "employees_last_name_idx")
+})
 public class Employee {
 
 	@Id
@@ -54,6 +40,7 @@ public class Employee {
 	@JoinTable(name="dept_emp",
 			joinColumns = @JoinColumn(name = "emp_no"),
 			inverseJoinColumns = @JoinColumn(name = "dept_no"))
+	@LazyCollection(value = LazyCollectionOption.EXTRA)
 	@WhereJoinTable(clause = "to_date = '9999-01-01'")
 	private Set<Department> departments;
 
@@ -62,7 +49,8 @@ public class Employee {
 			joinColumns = @JoinColumn(name = "emp_no"),
 			inverseJoinColumns = @JoinColumn(name = "dept_no"))
 	@WhereJoinTable(clause = "to_date != '9999-01-01'")
-	@OrderColumn(name="from_date", columnDefinition="date", insertable=false, updatable=false)
+	@LazyCollection(value = LazyCollectionOption.EXTRA)
+//	@OrderColumn(name="from_date", columnDefinition="date", insertable=false, updatable=false)
 	private List<Department> historicDepartments;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
@@ -72,6 +60,7 @@ public class Employee {
         joinColumns=@JoinColumn(name="emp_no")
     )
 	@Column(name="title")
+	@BatchSize(size = 10)
     @Where(clause = "to_date = '9999-01-01'")
 	private Set<String> titles;
 	
@@ -81,13 +70,15 @@ public class Employee {
         joinColumns=@JoinColumn(name="emp_no")
     )
 	@Column(name="title")
+	@LazyCollection(value = LazyCollectionOption.EXTRA)
     @Where(clause = "to_date != '9999-01-01'")
 	private List<String> historicTitles;
     
     @OneToMany(fetch=FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
+	@BatchSize(size = 10)
     @JoinColumn(name="emp_no")
-    @OrderBy(value = "from_date")
+	@OrderBy(value = "from_date desc")
 	private List<Salary> salaries;
 
 	public Department getDepartment() {
@@ -98,7 +89,7 @@ public class Employee {
 	}
 
 	public double getSalary() {
-		return this.salaries.get(this.salaries.size() - 1).getAmount();
+		return this.salaries.get(0).getAmount();
 	}
 
 	public String getFullName() {

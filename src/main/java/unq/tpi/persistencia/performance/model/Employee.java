@@ -46,7 +46,7 @@ public class Employee {
     private List<Department> historicDepartments;
 
     @ElementCollection
-    @Fetch(FetchMode.JOIN)
+//    @Fetch(FetchMode.JOIN)
     @CollectionTable(name = "titles", joinColumns = @JoinColumn(name = "emp_no"))
     @Column(name = "title")
     @BatchSize(size = 10)
@@ -61,7 +61,7 @@ public class Employee {
     private List<String> historicTitles;
 
     @OneToMany
-    @Fetch(FetchMode.JOIN)
+//    @Fetch(FetchMode.JOIN)
     @BatchSize(size = 10)
     @JoinColumn(name = "emp_no")
     @OrderBy(value = "from_date desc")

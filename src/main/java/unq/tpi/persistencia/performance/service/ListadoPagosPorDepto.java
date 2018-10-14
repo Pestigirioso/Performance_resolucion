@@ -1,32 +1,33 @@
 package unq.tpi.persistencia.performance.service;
 
 import unq.tpi.persistencia.performance.dao.DepartmentDAO;
-import unq.tpi.persistencia.performance.model.Department;
+
+import java.util.List;
 
 public class ListadoPagosPorDepto extends AbstractListado {
 
-	private final String id;
+    private final String id;
 
-	public ListadoPagosPorDepto(String fileName, String id) {
-		super(fileName);
-		this.id = id;
-	}
+    public ListadoPagosPorDepto(String fileName, String id) {
+        super(fileName);
+        this.id = id;
+    }
 
-	@Override
-	public void doListado() throws Exception {
-		Department depto = new DepartmentDAO().getByCode(this.id);
+    @Override
+    public void doListado() throws Exception {
+        List<SimpleEmployee> employees = new DepartmentDAO().getEmployees(this.id);
 
-		this.newLine();
-		this.addColumn("Total").addColumn(depto.getTotalSalaries()).newLine();
-		this.newLine();
-		
-		this.addColumn("Nombre").addColumn("Titulo").addColumn("Monto").newLine();
-		depto.getEmployees().forEach(it -> {
-			this.addColumn(it.getFullName())
-				.addColumn(it.getTitle())
-				.addColumn(it.getSalary())
-				.newLine();
-		});
-	}
-	
+        this.newLine();
+        this.addColumn("Total").addColumn(employees.stream().mapToDouble(SimpleEmployee::getSalary).sum()).newLine();
+        this.newLine();
+
+        this.addColumn("Nombre").addColumn("Titulo").addColumn("Monto").newLine();
+        employees.forEach(it -> {
+            this.addColumn(it.getFullName())
+                    .addColumn(it.getTitle())
+                    .addColumn(it.getSalary())
+                    .newLine();
+        });
+    }
+
 }

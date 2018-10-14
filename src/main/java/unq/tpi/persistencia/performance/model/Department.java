@@ -23,7 +23,6 @@ public class Department {
 //    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_emp", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
     @WhereJoinTable(clause = "to_date = '9999-01-01'")
-//    @BatchSize(size = 10)
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private Set<Employee> employees;
 
@@ -31,7 +30,6 @@ public class Department {
 //    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_emp", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
     @WhereJoinTable(clause = "to_date != '9999-01-01'")
-//    @BatchSize(size = 10)
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private Set<Employee> historicEmployees;
 
@@ -39,7 +37,6 @@ public class Department {
 //    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_manager", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
 //    @OrderColumn(name = "from_date", columnDefinition = "date", insertable = false, updatable = false)
-//    @BatchSize(size = 10)
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<Employee> managers;
 

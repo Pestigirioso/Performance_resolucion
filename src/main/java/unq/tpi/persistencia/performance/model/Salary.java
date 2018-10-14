@@ -1,22 +1,15 @@
 package unq.tpi.persistencia.performance.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name="salaries")
 public class Salary implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@	Id
+    @Id
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="emp_no")
 	private Employee employee;

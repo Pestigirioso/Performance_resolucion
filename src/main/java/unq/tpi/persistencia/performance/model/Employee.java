@@ -56,7 +56,6 @@ public class Employee {
     @ElementCollection
     @CollectionTable(name = "titles", joinColumns = @JoinColumn(name = "emp_no"))
     @Column(name = "title")
-//    @LazyCollection(value = LazyCollectionOption.EXTRA)
     @Where(clause = "to_date != '9999-01-01'")
     private List<String> historicTitles;
 

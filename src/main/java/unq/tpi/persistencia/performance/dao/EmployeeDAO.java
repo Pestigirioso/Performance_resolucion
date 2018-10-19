@@ -1,7 +1,6 @@
 package unq.tpi.persistencia.performance.dao;
 
 import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
 import unq.tpi.persistencia.performance.model.Employee;
 import unq.tpi.persistencia.performance.service.SimpleEmployee;
 import unq.tpi.persistencia.performance.service.runner.Runner;
@@ -30,11 +29,11 @@ public class EmployeeDAO extends BaseDAO<Employee> {
     }
 
     public List<SimpleEmployee> getMaxSalaries() {
-        String hql = "select s.amount as salary, s.employee.firstName as firstName, s.employee.lastName as lastName, '' as title " +
+        String hql = "select new unq.tpi.persistencia.performance.service.SimpleEmployee(s.employee.firstName, s.employee.lastName, s.amount, '') " +
                 "from Salary s where s.to = '9999-01-01' order by s.amount desc";
+
         return Runner.getCurrentSession().createQuery(hql)
                 .setMaxResults(10)
-                .setResultTransformer(Transformers.aliasToBean(SimpleEmployee.class))
                 .list();
     }
 }

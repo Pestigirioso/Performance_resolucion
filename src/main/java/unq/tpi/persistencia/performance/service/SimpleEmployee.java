@@ -6,6 +6,13 @@ public class SimpleEmployee {
     private String firstName;
     private String lastName;
 
+    public SimpleEmployee(String firstName, String lastName, double salary, String title) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salary = salary;
+        this.title = title;
+    }
+
     public String getFullName() {
         return firstName + ", " + lastName;
     }

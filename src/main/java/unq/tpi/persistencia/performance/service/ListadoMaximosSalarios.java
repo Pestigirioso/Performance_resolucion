@@ -14,10 +14,8 @@ public class ListadoMaximosSalarios extends AbstractListado {
     public void doListado() throws Exception {
         List<SimpleEmployee> employees = new EmployeeDAO().getMaxSalaries();
         this.addColumn("Nombre").addColumn("Sueldo").newLine();
-        employees.forEach(it -> {
-            this.addColumn(it.getFullName())
-                    .addColumn(it.getSalary())
-                    .newLine();
-        });
+        employees.forEach(it -> this.addColumn(it.getFullName())
+                .addColumn(it.getSalary())
+                .newLine());
     }
 }

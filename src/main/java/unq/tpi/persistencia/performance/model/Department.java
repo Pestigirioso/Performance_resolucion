@@ -20,30 +20,24 @@ public class Department {
     private String name;
 
     @ManyToMany
-//    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_emp", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
     @WhereJoinTable(clause = "to_date = '9999-01-01'")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private Set<Employee> employees;
 
     @ManyToMany
-//    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_emp", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
     @WhereJoinTable(clause = "to_date != '9999-01-01'")
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private Set<Employee> historicEmployees;
 
     @ManyToMany
-//    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "dept_manager", joinColumns = @JoinColumn(name = "dept_no"), inverseJoinColumns = @JoinColumn(name = "emp_no"))
-//    @OrderColumn(name = "from_date", columnDefinition = "date", insertable = false, updatable = false)
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<Employee> managers;
 
     public Double getTotalSalaries() {
-        return this.employees.stream()
-                .mapToDouble(employee -> employee.getSalary())
-                .sum();
+        return this.employees.stream().mapToDouble(Employee::getSalary).sum();
     }
 
     public Employee getManager() {

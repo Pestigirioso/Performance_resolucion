@@ -16,18 +16,14 @@ public class ListadoPagosPorDepto extends AbstractListado {
     @Override
     public void doListado() throws Exception {
         List<SimpleEmployee> employees = new DepartmentDAO().getEmployees(this.id);
-
         this.newLine();
         this.addColumn("Total").addColumn(employees.stream().mapToDouble(SimpleEmployee::getSalary).sum()).newLine();
         this.newLine();
-
         this.addColumn("Nombre").addColumn("Titulo").addColumn("Monto").newLine();
-        employees.forEach(it -> {
-            this.addColumn(it.getFullName())
-                    .addColumn(it.getTitle())
-                    .addColumn(it.getSalary())
-                    .newLine();
-        });
+        employees.forEach(it -> this.addColumn(it.getFullName())
+                .addColumn(it.getTitle())
+                .addColumn(it.getSalary())
+                .newLine());
     }
 
 }

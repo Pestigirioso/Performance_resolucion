@@ -41,12 +41,10 @@ public class Employee {
     @ManyToMany
     @JoinTable(name = "dept_emp", joinColumns = @JoinColumn(name = "emp_no"), inverseJoinColumns = @JoinColumn(name = "dept_no"))
     @WhereJoinTable(clause = "to_date != '9999-01-01'")
-//	@OrderColumn(name="from_date", columnDefinition="date", insertable=false, updatable=false)
     @LazyCollection(value = LazyCollectionOption.EXTRA)
     private List<Department> historicDepartments;
 
     @ElementCollection
-//    @Fetch(FetchMode.JOIN)
     @CollectionTable(name = "titles", joinColumns = @JoinColumn(name = "emp_no"))
     @Column(name = "title")
     @BatchSize(size = 10)
@@ -60,16 +58,13 @@ public class Employee {
     private List<String> historicTitles;
 
     @OneToMany
-//    @Fetch(FetchMode.JOIN)
     @BatchSize(size = 10)
     @JoinColumn(name = "emp_no")
     @OrderBy(value = "from_date desc")
     private List<Salary> salaries;
 
     public Department getDepartment() {
-        if (this.departments.isEmpty()) {
-            return null;
-        }
+        if (this.departments.isEmpty()) return null;
         return this.departments.iterator().next();
     }
 
@@ -82,9 +77,7 @@ public class Employee {
     }
 
     public String getTitle() {
-        if (this.titles.isEmpty()) {
-            return null;
-        }
+        if (this.titles.isEmpty()) return null;
         return this.titles.iterator().next();
     }
 

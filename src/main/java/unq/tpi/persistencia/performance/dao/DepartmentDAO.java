@@ -33,7 +33,7 @@ public class DepartmentDAO extends BaseDAO<Department> {
                 "where d.code = :code  and s.to = '9999-01-01'";
 
         return Runner.getCurrentSession()
-                .createQuery(hql)
+                .createQuery(hql, SimpleEmployee.class)
                 .setParameter("code", code)
                 .getResultList();
     }

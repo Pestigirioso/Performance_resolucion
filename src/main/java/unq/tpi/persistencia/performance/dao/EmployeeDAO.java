@@ -29,7 +29,7 @@ public class EmployeeDAO extends BaseDAO<Employee> {
     }
 
     public List<SimpleEmployee> getMaxSalaries() {
-        String hql = "select new unq.tpi.persistencia.performance.service.SimpleEmployee(s.employee.firstName, s.employee.lastName, s.amount, '') " +
+        String hql = "select new " + SimpleEmployee.class.getName() + "(s.employee.firstName, s.employee.lastName, s.amount, '') " +
                 "from Salary s where s.to = '9999-01-01' order by s.amount desc";
 
         return Runner.getCurrentSession().createQuery(hql, SimpleEmployee.class)

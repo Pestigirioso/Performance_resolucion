@@ -28,7 +28,7 @@ public class DepartmentDAO extends BaseDAO<Department> {
     }
 
     public List<SimpleEmployee> getEmployees(String code) {
-        String hql = "select new unq.tpi.persistencia.performance.service.SimpleEmployee(e.firstName, e.lastName, s.amount, t) " +
+        String hql = "select new " + SimpleEmployee.class.getName() + "(e.firstName, e.lastName, s.amount, t) " +
                 "from Department d inner join d.employees e inner join e.titles t inner join e.salaries s " +
                 "where d.code = :code  and s.to = '9999-01-01'";
 
